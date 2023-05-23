@@ -9,14 +9,22 @@ export default class ApiService {
     this.getMovieId = ''; //Пошук по id
   }
 
-  async fetchArticles() {
+  async fetchMovies() {
     try {
       const response = await fetch(
         `${BASE_URL}3/search/movie?api_key=${API_KEY}&query=${this.searchQuery}&page=${this.page}&language=en-US&include_adult=false`
       );
 
-      const responseData = await response.json();
-      const results = responseData.results;
+      if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error(
+            Notiflix.Notify.failure('Search result not successful. Try again')
+          );
+        }
+        return;
+      }
+
+      const { results } = await response.json();
 
       if (results.length === 0) {
         Notiflix.Notify.failure(
@@ -27,28 +35,46 @@ export default class ApiService {
 
       return results;
     } catch (error) {
-      Notiflix.Notify.failure('Search result not successful. Try again');
+      console.log(error);
     }
   }
 
-  fetchTrending() {
-    return fetch(
-      `${BASE_URL}3/trending/movie/week?api_key=${API_KEY}&page=${this.page}&language=en-US`
-    )
-      .then(response => response.json())
-      .then(response => {
-        const havePoster = response.results.filter(
-          result => result.poster_path !== POSTER
+  async fetchTrending() {
+    try {
+      const response = await fetch(
+        `${BASE_URL}3/trending/movie/week?api_key=${API_KEY}&page=${this.page}&language=en-US`
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          Notiflix.Notify.failure('Failed to fetch trending movies')
         );
-        return havePoster;
-      });
+      }
+
+      const { results } = await response.json();
+      return results;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
-  fetchDetails() {
-    return fetch(`
-    ${BASE_URL}3/movie/${this.getMovieId}?api_key=${API_KEY}&language=en-US`)
-      .then(response => response.json())
-      .then(response => response);
+  async fetchDetails() {
+    try {
+      const response = await fetch(
+        `${BASE_URL}3/movie/${this.getMovieId}?api_key=${API_KEY}&language=en-US`
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          Notiflix.Notify.failure('Failed to fetch movie details')
+        );
+      }
+
+      const responseData = await response.json();
+      return responseData;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   incrementPage() {
@@ -85,4 +111,4 @@ export default class ApiService {
 
 const apiService = new ApiService();
 
-apiService.fetchArticles().then(console.log);
+apiService.fetchMovies().then(console.log);
