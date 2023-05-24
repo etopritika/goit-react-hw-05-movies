@@ -70,8 +70,8 @@ export default class ApiService {
         );
       }
 
-      const responseData = await response.json();
-      return responseData;
+      const results = await response.json();
+      return results;
     } catch (error) {
       console.error(error);
     }
@@ -109,6 +109,6 @@ export default class ApiService {
   }
 }
 
-const apiService = new ApiService();
+// const apiService = new ApiService();
 
-apiService.fetchMovies().then(console.log);
+// apiService.fetchMovies().then(console.log);
