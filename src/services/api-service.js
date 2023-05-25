@@ -77,6 +77,44 @@ export default class ApiService {
     }
   }
 
+  async fetchCast() {
+    try {
+      const response = await fetch(
+        `${BASE_URL}3/movie/${this.getMovieId}/credits?api_key=${API_KEY}`
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          Notiflix.Notify.failure('Failed to fetch movie details')
+        );
+      }
+
+      const { cast } = await response.json();
+      return cast;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async fetchReviews() {
+    try {
+      const response = await fetch(
+        `${BASE_URL}3/movie/${this.getMovieId}/reviews?api_key=${API_KEY}`
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          Notiflix.Notify.failure('Failed to fetch movie details')
+        );
+      }
+
+      const { results } = await response.json();
+      return results;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   incrementPage() {
     this.page = this.page + 1;
   }

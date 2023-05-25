@@ -9,8 +9,12 @@ export default function MovieDetails() {
   const [movie, setMovie] = useState({});
   const [status, setStatus] = useState('idle');
   const { movieId } = useParams();
-  const location = useLocation();
-  const backLinkRef = useRef(location.state?.from ?? '/movies');
+  // const location = useLocation();
+  // const backLinkRef = useRef(location.state?.from ?? '/movies');
+
+  const handleBackClick = () => {
+    window.history.back();
+  };
 
   useEffect(() => {
     setStatus('pending');
@@ -22,13 +26,16 @@ export default function MovieDetails() {
   }, [movieId]);
 
   const { original_title, poster_path, vote_average, overview, genres } = movie;
+
   if (status === 'pending') {
     return <Loader />;
   }
+  
   if (status === 'resolved') {
     return (
       <>
-        <BackLink to={backLinkRef.current}>Back to movies</BackLink>
+      {/* to={backLinkRef.current} */}
+        <BackLink ><button onClick={handleBackClick}>Back to movies</button></BackLink>
         <div>
           <img src={`https://image.tmdb.org/t/p/w400/${poster_path}`} alt="" />
           <ul>
@@ -39,8 +46,8 @@ export default function MovieDetails() {
               Genres:{' '}
               <ul>
                 {genres.map(({ name }) => {
-                    return <li key={name}>{name}</li>;
-                  })}
+                  return <li key={name}>{name}</li>;
+                })}
               </ul>
             </li>
           </ul>

@@ -1,4 +1,4 @@
-import "./Home.css"
+// import { Container } from "./Home.styled";
 import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import ApiService from "../services/api-service";
@@ -14,7 +14,7 @@ export default function Home() {
     return (
         <>
         <h1>Trending today</h1>
-        {movies.map(movie => {return<Link key={movie.id} to={`movies/${movie.id}`}>{movie.title}</Link>})}
+        {movies.map(({id, title}) => {return<Link key={id} to={`movies/${id}`}>{title}</Link>})}
         </>
     )
 }
