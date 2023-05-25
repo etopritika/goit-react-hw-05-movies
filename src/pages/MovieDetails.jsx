@@ -1,4 +1,4 @@
-import { useRef, Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useState, useRef } from 'react';
 import { useParams, Link, Outlet, useLocation } from 'react-router-dom';
 import BackLink from '../components/BackLink';
 import Loader from '../components/Loader';
@@ -9,20 +9,19 @@ export default function MovieDetails() {
   const [movie, setMovie] = useState({});
   const [status, setStatus] = useState('idle');
   const { movieId } = useParams();
-  // const location = useLocation();
-  // const backLinkRef = useRef(location.state?.from ?? '/movies');
-
-  const handleBackClick = () => {
-    window.history.back();
-  };
+  const location = useLocation();
+  const refLocation = useRef(location);
 
   useEffect(() => {
     setStatus('pending');
     apiService.movieId = movieId;
-    apiService.fetchDetails().then(response => {
-      setStatus('resolved');
-      setMovie(response);
-    });
+    apiService
+      .fetchDetails()
+      .then(response => {
+        setStatus('resolved');
+        setMovie(response);
+      })
+      .catch(console.log);
   }, [movieId]);
 
   const { original_title, poster_path, vote_average, overview, genres } = movie;
@@ -30,12 +29,13 @@ export default function MovieDetails() {
   if (status === 'pending') {
     return <Loader />;
   }
-  
+
   if (status === 'resolved') {
     return (
       <>
-      {/* to={backLinkRef.current} */}
-        <BackLink ><button onClick={handleBackClick}>Back to movies</button></BackLink>
+        <BackLink to={refLocation.current.state}>
+          <button>Back to movies</button>
+        </BackLink>
         <div>
           <img src={`https://image.tmdb.org/t/p/w400/${poster_path}`} alt="" />
           <ul>
@@ -43,7 +43,7 @@ export default function MovieDetails() {
             <li>User score: {(vote_average * 10).toFixed(0)}%</li>
             <li>Overview: {overview}</li>
             <li>
-              Genres:{' '}
+              Genres:
               <ul>
                 {genres.map(({ name }) => {
                   return <li key={name}>{name}</li>;
