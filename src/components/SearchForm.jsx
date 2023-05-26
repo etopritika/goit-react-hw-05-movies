@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Input, Form } from './SearchForm.styled';
 
 export default function SearchForm({
@@ -20,4 +21,10 @@ export default function SearchForm({
       </Form>
     </>
   );
+}
+
+SearchForm.propTypes = {
+  handleSubmit: PropTypes.func,
+  movieName: PropTypes.string,
+  handleInputChange: PropTypes.func
 }
