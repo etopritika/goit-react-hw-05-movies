@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import {Title, ListLink} from "./Home.styled";
+import { Title, ListLink } from './Home.styled';
 import ApiService from '../services/api-service';
 const apiService = new ApiService();
 

@@ -20,10 +20,10 @@ export const GenresList = styled.ul`
 `;
 
 export const GenresItem = styled.ul`
-margin-right: 10px;
-&:last-child {
-  margin-right: 0px;
-}
+  margin-right: 10px;
+  &:last-child {
+    margin-right: 0px;
+  }
 `;
 
 export const InfoList = styled.ul`

@@ -8,7 +8,7 @@ import {
   ListItem,
   GenresList,
   GenresItem,
-  InfoList
+  InfoList,
 } from './MoviesDetails.styled';
 import ApiService from '../services/api-service';
 const apiService = new ApiService();

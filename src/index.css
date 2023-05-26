@@ -14,16 +14,15 @@ code {
     monospace;
 }
 
-*{
+* {
   margin: 0;
   padding: 0;
 }
 
-li{
+li {
   list-style: none;
 }
 
-img{
+img {
   display: inline-block;
-  
 }

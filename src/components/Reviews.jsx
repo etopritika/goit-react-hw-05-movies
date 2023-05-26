@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { ReviewItem } from "./Reviews.styled";
+import { ReviewItem } from './Reviews.styled';
 import ApiService from '../services/api-service';
 const apiService = new ApiService();
 
@@ -21,7 +21,9 @@ export default function Reviews() {
           {reviews.map(({ author, content }) => {
             return (
               <ReviewItem key={author}>
-                <span><b>{author}</b></span>
+                <span>
+                  <b>{author}</b>
+                </span>
                 <br />
                 {content}
               </ReviewItem>

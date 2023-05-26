@@ -2,7 +2,7 @@ import Notiflix from 'notiflix';
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams, useLocation } from 'react-router-dom';
 import SearchForm from '../components/SearchForm';
-import { ListLink } from "./Movies.styled";
+import { ListLink } from './Movies.styled';
 import ApiService from '../services/api-service';
 const apiService = new ApiService();
 
