@@ -1,8 +1,10 @@
+import { Input, Form } from "./SearchForm.styled";
+
 export default function SearchForm({handleSubmit, movieName, handleInputChange}) {
     return (
         <>
-          <form onSubmit={handleSubmit}>
-            <input
+          <Form onSubmit={handleSubmit}>
+            <Input
               value={movieName}
               name="query"
               onChange={handleInputChange}
@@ -11,7 +13,7 @@ export default function SearchForm({handleSubmit, movieName, handleInputChange})
               autoFocus
               placeholder="Search movies"
             />
-          </form>
+          </Form>
         </>
       );
 }

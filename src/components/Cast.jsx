@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { CastItem } from "./Cast.styled";
 import ApiService from '../services/api-service';
 const apiService = new ApiService();
 
@@ -14,7 +15,7 @@ export default function Cast() {
     <ul>
       {actors.map(({ profile_path, name, character }) => {
         return (
-          <li key={name}>
+          <CastItem key={name}>
             <ul>
             <li>
             <img
@@ -29,7 +30,7 @@ export default function Cast() {
               Character: {character}
             </li>
           </ul>
-          </li>
+          </CastItem>
         );
       })}
     </ul>

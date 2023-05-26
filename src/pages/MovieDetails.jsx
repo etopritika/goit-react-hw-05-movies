@@ -1,7 +1,15 @@
 import { Suspense, useEffect, useState, useRef } from 'react';
 import { useParams, Link, Outlet, useLocation } from 'react-router-dom';
 import BackLink from '../components/BackLink';
+import { HiArrowLeft } from 'react-icons/hi';
 import Loader from '../components/Loader';
+import {
+  Container,
+  ListItem,
+  GenresList,
+  GenresItem,
+  InfoList
+} from './MoviesDetails.styled';
 import ApiService from '../services/api-service';
 const apiService = new ApiService();
 
@@ -24,7 +32,16 @@ export default function MovieDetails() {
       .catch(console.log);
   }, [movieId]);
 
-  const { original_title, poster_path, vote_average, overview, genres } = movie;
+  const {
+    original_title,
+    poster_path,
+    vote_average,
+    overview,
+    genres,
+    release_date,
+  } = movie;
+  const date = new Date(release_date);
+  const year = date.getFullYear();
 
   if (status === 'pending') {
     return <Loader />;
@@ -34,32 +51,41 @@ export default function MovieDetails() {
     return (
       <>
         <BackLink to={refLocation.current.state}>
-          <button>Back to movies</button>
+          <HiArrowLeft size="24" />
+          Back to movies
         </BackLink>
-        <div>
+        <Container>
           <img src={`https://image.tmdb.org/t/p/w400/${poster_path}`} alt="" />
           <ul>
-            <li>{original_title}</li>
-            <li>User score: {(vote_average * 10).toFixed(0)}%</li>
-            <li>Overview: {overview}</li>
-            <li>
-              Genres:
-              <ul>
+            <ListItem>
+              <b>
+                {original_title} ({year})
+              </b>
+            </ListItem>
+            <ListItem>User score: {(vote_average * 10).toFixed(0)}%</ListItem>
+            <ListItem>
+              <b>Overview</b>
+              <br /> {overview}
+            </ListItem>
+            <ListItem>
+              <b>Genres:</b>
+              <GenresList>
                 {genres.map(({ name }) => {
-                  return <li key={name}>{name}</li>;
+                  return <GenresItem key={name}>{name}</GenresItem>;
                 })}
-              </ul>
-            </li>
+              </GenresList>
+            </ListItem>
           </ul>
-        </div>
-        <ul>
+        </Container>
+        <p>Additional informationk</p>
+        <InfoList>
           <li>
             <Link to="cast">Cast</Link>
           </li>
           <li>
             <Link to="reviews">Reviews</Link>
           </li>
-        </ul>
+        </InfoList>
         <Suspense fallback={<Loader />}>
           <Outlet />
         </Suspense>

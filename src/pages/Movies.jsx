@@ -1,8 +1,8 @@
 import Notiflix from 'notiflix';
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams, useLocation } from 'react-router-dom';
-// import Loader from '../components/Loader';
 import SearchForm from '../components/SearchForm';
+import { ListLink } from "./Movies.styled";
 import ApiService from '../services/api-service';
 const apiService = new ApiService();
 
@@ -10,9 +10,9 @@ export default function Movies() {
   const [movieName, setMovieName] = useState('');
   const [searchParams, setSearchParams] = useSearchParams({});
   const [fetchMovies, setFetchMovies] = useState([]);
-  const name = searchParams.get("query") ?? '';
+  const name = searchParams.get('query') ?? '';
   const moviesLocation = useLocation();
-  
+
   const handleSubmit = e => {
     e.preventDefault();
     if (movieName.trim() === '') {
@@ -27,7 +27,7 @@ export default function Movies() {
   };
 
   useEffect(() => {
-    if(!name){
+    if (!name) {
       return;
     }
     apiService.query = name;
@@ -46,9 +46,11 @@ export default function Movies() {
       {fetchMovies && (
         <ul>
           {fetchMovies.map(({ id, title }) => (
-            <Link key={id} to={`${id}`} state={moviesLocation}>
-              <li>{title}</li>
-            </Link>
+            <ListLink key={id}>
+              <Link to={`${id}`} state={moviesLocation}>
+                {title}
+              </Link>
+            </ListLink>
           ))}
         </ul>
       )}

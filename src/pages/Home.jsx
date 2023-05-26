@@ -1,6 +1,6 @@
-import "./Home.styled";
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
+import {Title, ListLink} from "./Home.styled";
 import ApiService from '../services/api-service';
 const apiService = new ApiService();
 
@@ -14,14 +14,18 @@ export default function Home() {
 
   return (
     <>
-      <h1>Trending today</h1>
-      {movies.map(({ id, title }) => {
-        return (
-          <Link key={id} to={`movies/${id}`} state={homeLocation}>
-            {title}
-          </Link>
-        );
-      })}
+      <Title>Trending today</Title>
+      <ul>
+        {movies.map(({ id, title }) => {
+          return (
+            <ListLink key={id}>
+              <Link to={`movies/${id}`} state={homeLocation}>
+                {title}
+              </Link>
+            </ListLink>
+          );
+        })}
+      </ul>
     </>
   );
 }
