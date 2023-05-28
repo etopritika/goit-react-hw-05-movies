@@ -1,18 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { CastItem } from './Cast.styled';
-import ApiService from '../services/api-service';
-const apiService = new ApiService();
+import { fetchCast } from '../services/api-service';
 
 export default function Cast() {
   const [actors, setActors] = useState([]);
   const { movieId } = useParams();
   useEffect(() => {
-    apiService.movieId = movieId;
-    apiService
-      .fetchCast()
+    fetchCast(movieId)
       .then(response => setActors(response))
-      .catch(console.log);
+      .catch(error => alert(error));
   }, [movieId]);
   return (
     <ul>

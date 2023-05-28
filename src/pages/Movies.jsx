@@ -3,13 +3,12 @@ import { useState, useEffect } from 'react';
 import { Link, useSearchParams, useLocation } from 'react-router-dom';
 import SearchForm from '../components/SearchForm';
 import { ListLink } from './Movies.styled';
-import ApiService from '../services/api-service';
-const apiService = new ApiService();
+import { fetchMovies } from '../services/api-service';
 
 export default function Movies() {
   const [movieName, setMovieName] = useState('');
   const [searchParams, setSearchParams] = useSearchParams({});
-  const [fetchMovies, setFetchMovies] = useState([]);
+  const [fetchedMovies, setFetchedMovies] = useState([]);
   const name = searchParams.get('query') ?? '';
   const moviesLocation = useLocation();
 
@@ -30,10 +29,12 @@ export default function Movies() {
     if (!name) {
       return;
     }
-    apiService.query = name;
-    apiService.fetchMovies().then(response => {
-      setFetchMovies(response);
-    });
+
+    fetchMovies(name)
+      .then(response => {
+        setFetchedMovies(response);
+      })
+      .catch(error => alert(error));
   }, [name]);
 
   return (
@@ -43,9 +44,9 @@ export default function Movies() {
         movieName={movieName}
         handleInputChange={handleInputChange}
       />
-      {fetchMovies && (
+      {fetchedMovies && (
         <ul>
-          {fetchMovies.map(({ id, title }) => (
+          {fetchedMovies.map(({ id, title }) => (
             <ListLink key={id}>
               <Link to={`${id}`} state={moviesLocation}>
                 {title}

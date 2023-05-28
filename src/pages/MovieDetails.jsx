@@ -10,8 +10,7 @@ import {
   GenresItem,
   InfoList,
 } from './MoviesDetails.styled';
-import ApiService from '../services/api-service';
-const apiService = new ApiService();
+import { fetchDetails } from '../services/api-service';
 
 export default function MovieDetails() {
   const [movie, setMovie] = useState({});
@@ -22,14 +21,12 @@ export default function MovieDetails() {
 
   useEffect(() => {
     setStatus('pending');
-    apiService.movieId = movieId;
-    apiService
-      .fetchDetails()
+    fetchDetails(movieId)
       .then(response => {
         setStatus('resolved');
         setMovie(response);
       })
-      .catch(console.log);
+      .catch(error => alert(error));
   }, [movieId]);
 
   const {

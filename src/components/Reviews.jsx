@@ -1,18 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ReviewItem } from './Reviews.styled';
-import ApiService from '../services/api-service';
-const apiService = new ApiService();
+import { fetchReviews } from '../services/api-service';
 
 export default function Reviews() {
   const [reviews, setReviews] = useState([]);
   const { movieId } = useParams();
   useEffect(() => {
-    apiService.movieId = movieId;
-    apiService
-      .fetchReviews()
+    fetchReviews(movieId)
       .then(response => setReviews(response))
-      .catch(console.log);
+      .catch(error => alert(error));
   }, [movieId]);
   return (
     <>
